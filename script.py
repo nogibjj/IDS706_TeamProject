@@ -1,67 +1,62 @@
 import pandas as pd
 import MySQLdb
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 def get_connection():
     """Returns a connection to the database"""
     connection = MySQLdb.connect(
-        host="imdb.ciankffgrtkz.us-east-1.rds.amazonaws.com",
-        user="admin",
-        passwd=os.environ["PROJ5_DB_PASS"],
-        db="proj5",
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        passwd=os.getenv("DB_PASSWORD"),
+        db=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT"))  # Assuming port is an integer
     )
     return connection
 
-def save_data(connection, title, year, director, actors, rating, runtime, censor, gross, genre_main, genre_side):
+def save_data(connection, MMSA, total_percent_at_risk, high_risk_per_icu_bed, high_risk_per_hospital, icu_beds, hospitals, total_at_risk):
     cursor = connection.cursor()
-    str = (
-        "INSERT INTO movie VALUES ('"
-        + title
+    query = (
+        "INSERT INTO icu_beds VALUES ('"
+        + MMSA
         + "',"
-        + year
-        + ",'"
-        + director
-        + "','"
-        + actors
-        + "',"
-        + rating
+        + str(total_percent_at_risk)
         + ","
-        + runtime
-        + ",'"
-        + censor
-        + "','"
-        + gross
-        + "','"
-        + genre_main
-        + "','"
-        + genre_side
-        + "');"
+        + str(high_risk_per_icu_bed)
+        + ","
+        + str(high_risk_per_hospital)
+        + ","
+        + str(icu_beds)
+        + ","
+        + str(hospitals)
+        + ","
+        + str(total_at_risk)
+        + ");"
     )
-    #print(str)
-    cursor.execute(str)
+    cursor.execute(query)
     connection.commit()
-
 
 def save_all_data():
     """Saves the csv data to the database"""
-    df = pd.read_csv("./movie.csv", encoding="utf-8")
+    df = pd.read_csv("./mmsa-icu-beds.csv", encoding="utf-8")
     connection = get_connection()
     for index, row in df.iterrows():
         try:
             save_data(
                 connection,
-                row["Movie_Title"],
-                str(row["Year"]),
-                row["Director"],
-                row["Actors"],
-                str(row["Rating"]),
-                str(row["Runtime(Mins)"]),
-                row["Censor"],
-                row["Total_Gross"],
-                row["main_genre"],
-                row["side_genre"],
+                row["MMSA"],
+                row["total_percent_at_risk"],
+                row["high_risk_per_icu_bed"],
+                row["high_risk_per_hospital"],
+                row["icu_beds"],
+                row["hospitals"],
+                row["total_at_risk"],
             )
         except Exception as e:
+            print(e)
             continue
 
     connection.close()

@@ -5,4 +5,4 @@ ipython
 fastapi
 uvicorn[standard]
 requests
-mysqlclient
+python-dotenv

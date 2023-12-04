@@ -1,81 +1,39 @@
 """Database query lib"""
 import json
 import MySQLdb
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 class DB:
-    """DB utility class to connect and query"""
+    """DB utility class to connect and query ICU data"""
     def __init__(self):
-        # get connected with the db
         self.connection = MySQLdb.connect(
-            host="imdb.ciankffgrtkz.us-east-1.rds.amazonaws.com",
-            user="admin",
-            passwd="12349876",
-            db="proj5",
+            host=os.getenv("DB_HOST"),        # Use environment variable
+            user=os.getenv("DB_USER"),        # Use environment variable
+            passwd=os.getenv("DB_PASSWORD"),  # Use environment variable
+            db=os.getenv("DB_NAME"),          # Use environment variable
+            port=os.getenv("DB_PORT")         # Use environment variable (if needed)
         )
-        # get the cursor of the connection
         self.cursor = self.connection.cursor()
 
-
-    def query1(self, director_name):
-        '''
-        query1: return all movies directed by a specified director
-        '''
-        sql1 = 'SELECT title, year, director\
-                FROM movie\
-                WHERE director = "' + director_name + '"'
-        self.cursor.execute(sql1)
+    def get_icu_info(self, MMSA):
+        """Return ICU-related info for a specified MMSA"""
+        query = f'SELECT * FROM icu_beds WHERE MMSA = "{MMSA}"'
+        self.cursor.execute(query)
         data = self.cursor.fetchall()
 
-        result = []
-        for row in data:
-            movie = {}
-            movie['title'] = row[0]
-            movie['year'] = row[1]
-            movie['director'] = row[2]
-            result.append(movie)
-
+        result = [dict(zip(['MMSA', 'total_percent_at_risk', 'high_risk_per_icu_bed', 'high_risk_per_hospital', 'icu_beds', 'hospitals', 'total_at_risk'], row)) for row in data]
         return json.dumps(result)
 
-
-    def query2(self):
-        '''
-        query2: return all movies that have ratings higher than 9
-        '''
-        sql2 = 'SELECT title, year, rating\
-                FROM movie\
-                WHERE rating >= 9'
-        self.cursor.execute(sql2)
+    def get_hospitals_info(self):
+        """Return summary info about hospitals"""
+        query = 'SELECT hospitals, COUNT(*) FROM icu_beds GROUP BY hospitals'
+        self.cursor.execute(query)
         data = self.cursor.fetchall()
 
-        result = []
-        for row in data:
-            movie = {}
-            movie['title'] = row[0]
-            movie['year'] = row[1]
-            movie['rating'] = str(row[2])
-            result.append(movie)
-
+        result = [{'hospitals': row[0], 'count': row[1]} for row in data]
         return json.dumps(result)
 
-
-    def query3(self):
-        '''
-        query3: return the top 10 longest movies
-        '''
-        sql3 = 'SELECT title, year, runtime\
-                FROM movie\
-                ORDER BY runtime DESC\
-                LIMIT 10'       
-        self.cursor.execute(sql3)
-        data = self.cursor.fetchall()
-
-        result = []
-        for row in data:
-            movie = {}
-            movie['title'] = row[0]
-            movie['year'] = row[1]
-            movie['runtime'] = row[2]
-            result.append(movie)
-
-        return json.dumps(result)
