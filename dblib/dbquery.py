@@ -15,7 +15,7 @@ class DB:
             user=os.getenv("DB_USER"),        # Use environment variable
             passwd=os.getenv("DB_PASSWORD"),  # Use environment variable
             db=os.getenv("DB_NAME"),          # Use environment variable
-            port=os.getenv("DB_PORT")         # Use environment variable (if needed)
+            port=int(os.getenv("DB_PORT"))         # Use environment variable (if needed)
         )
         self.cursor = self.connection.cursor()
 
