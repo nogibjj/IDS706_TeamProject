@@ -7,58 +7,32 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_connection():
-    """Returns a connection to the database"""
-    connection = MySQLdb.connect(
+    return MySQLdb.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
         passwd=os.getenv("DB_PASSWORD"),
         db=os.getenv("DB_NAME"),
-        port=int(os.getenv("DB_PORT"))  # Assuming port is an integer
+        port=int(os.getenv("DB_PORT"))
     )
-    return connection
 
-def save_data(connection, MMSA, total_percent_at_risk, high_risk_per_icu_bed, high_risk_per_hospital, icu_beds, hospitals, total_at_risk):
+def save_data(connection, row):
     cursor = connection.cursor()
-    query = (
-        "INSERT INTO icu_beds VALUES ('"
-        + MMSA
-        + "',"
-        + str(total_percent_at_risk)
-        + ","
-        + str(high_risk_per_icu_bed)
-        + ","
-        + str(high_risk_per_hospital)
-        + ","
-        + str(icu_beds)
-        + ","
-        + str(hospitals)
-        + ","
-        + str(total_at_risk)
-        + ");"
-    )
-    cursor.execute(query)
+    MMSA, total_percent, *rest = row
+    total_percent = float(total_percent.strip('%')) / 100 if '%' in total_percent else None
+    values = [MMSA, total_percent] + [None if r == 'NA' else r for r in rest]
+    query = "INSERT INTO icu_beds VALUES (%s, %s, %s, %s, %s, %s, %s);"
+    cursor.execute(query, values)
     connection.commit()
 
 def save_all_data():
-    """Saves the csv data to the database"""
     df = pd.read_csv("./mmsa-icu-beds.csv", encoding="utf-8")
     connection = get_connection()
     for index, row in df.iterrows():
         try:
-            save_data(
-                connection,
-                row["MMSA"],
-                row["total_percent_at_risk"],
-                row["high_risk_per_icu_bed"],
-                row["high_risk_per_hospital"],
-                row["icu_beds"],
-                row["hospitals"],
-                row["total_at_risk"],
-            )
+            save_data(connection, row)
         except Exception as e:
             print(e)
             continue
-
     connection.close()
 
 if __name__ == "__main__":
