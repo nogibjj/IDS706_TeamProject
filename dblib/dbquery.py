@@ -1,6 +1,7 @@
 """Database query lib"""
 import json
-import MySQLdb
+# import MySQLdb
+import mysql.connector
 import os
 from dotenv import load_dotenv
 
@@ -10,7 +11,7 @@ load_dotenv()
 class DB:
     """DB utility class to connect and query ICU data"""
     def __init__(self):
-        self.connection = MySQLdb.connect(
+        self.connection = mysql.connector.connect(
             host=os.getenv("DB_HOST"),        # Use environment variable
             user=os.getenv("DB_USER"),        # Use environment variable
             passwd=os.getenv("DB_PASSWORD"),  # Use environment variable

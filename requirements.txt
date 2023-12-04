@@ -3,6 +3,8 @@ pytest
 pylint
 ipython
 fastapi
+mysql-connector-python
 uvicorn[standard]
 requests
 python-dotenv
+pandas
