@@ -1,7 +1,7 @@
 # ICU Data Service Microservice
 ## Team Members
 
-Linke Li (), Yang Xu (), Yunjia Liu (), and Zhichen Guo ()
+Linke Li (ll442), Yang Xu (yx248), Yunjia Liu (yl794), and Zhichen Guo (zg105)
 
 ## Overview
 This project is a FastAPI microservice designed to provide information on ICU beds in various Metropolitan and Micropolitan Statistical Areas (MMSA). It includes a data pipeline, load testing, data engineering, and CI/CD integrations, developed using Python.
