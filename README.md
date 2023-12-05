@@ -8,6 +8,9 @@ Linke Li (ll442), Yang Xu (yx248), Yunjia Liu (yl794), and Zhichen Guo (zg105)
 ## Overview
 This project is a FastAPI microservice designed to provide information on ICU beds in various Metropolitan and Micropolitan Statistical Areas (MMSA). It includes a data pipeline, load testing, data engineering, and CI/CD integrations, developed using Python.
 
+The Overall Archetecture of our Data Engineering project is shown below
+![ArchetecturalDiagram](./ArchetecturalDiagram.png)
+
 ## Features
 - **Microservice for ICU Data**: Provides ICU-related information for specified MMSAs.
 - **Data Engineering**: Utilizes a MySQL database to manage ICU data.
@@ -54,7 +57,5 @@ Refer to `schema.sql` for the database schema. The data from `mmsa-icu-beds.csv`
 ## CI/CD
 CI/CD is implemented using GitHub Actions for automated testing and deployment.
 
-## Architectural Diagram
-The Overall Archetecture of our Data Engineering project is shown below
-![ArchetecturalDiagram](./ArchetecturalDiagram.png)
+## Video
 
