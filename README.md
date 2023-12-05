@@ -54,3 +54,7 @@ Refer to `schema.sql` for the database schema. The data from `mmsa-icu-beds.csv`
 ## CI/CD
 CI/CD is implemented using GitHub Actions for automated testing and deployment.
 
+## Architectural Diagram
+The Overall Archetecture of our Data Engineering project is shown below
+![ArchetecturalDiagram](./ArchetecturalDiagram.png)
+
