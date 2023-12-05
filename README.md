@@ -35,7 +35,7 @@ docker run -p 8080:8080 icu-data-service
 ## Endpoints
 - `/`: Welcome message
 - `/icu_info/{MMSA}`: ICU info for a specified MMSA
-- `/hospitals_info`: Summary info about hospitals
+- `/hospitals_info`: Summary info about hospitals which has more than 5 icu beds
 
 ## Database Setup
 Refer to `schema.sql` for the database schema. The data from `mmsa-icu-beds.csv` should be imported into the database as per this schema.
