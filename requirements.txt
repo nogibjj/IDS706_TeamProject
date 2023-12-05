@@ -1,11 +1,27 @@
-black
-pytest
-pylint
-ipython
-fastapi
-mysql-connector-python
-uvicorn[standard]
+# Basic utilities
 requests
 python-dotenv
 pandas
+
+# Data visualization
+matplotlib
+
+# Testing
+pytest
+pytest-cov
+nbval
+
+# Code formatting
+black
+
+# Code linting
+pylint
+
+# FastAPI and related utilities
+fastapi
+uvicorn[standard]
 httpx
+
+# Database connector
+mysql-connector-python
+
