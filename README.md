@@ -1,4 +1,6 @@
 # ICU Data Service Microservice
+[![Python CI](https://github.com/nogibjj/IDS706_TeamProject/actions/workflows/python_app_cicd.yml/badge.svg)](https://github.com/nogibjj/IDS706_TeamProject/actions/workflows/python_app_cicd.yml)
+
 ## Team Members
 
 Linke Li (ll442), Yang Xu (yx248), Yunjia Liu (yl794), and Zhichen Guo (zg105)
