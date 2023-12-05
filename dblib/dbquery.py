@@ -16,7 +16,7 @@ class DB:
             user=os.getenv("DB_USER"),        # Use environment variable
             passwd=os.getenv("DB_PASSWORD"),  # Use environment variable
             db=os.getenv("DB_NAME"),          # Use environment variable
-            port=int(os.getenv("DB_PORT"))         # Use environment variable (if needed)
+            port=3306,    # Use environment variable (if needed)
         )
         self.cursor = self.connection.cursor()
 
@@ -31,18 +31,12 @@ class DB:
     #     return json.dumps(result)
 
     def get_icu_info(self, MMSA):
-        query = f'SELECT * FROM icu_beds WHERE MMSA = "{MMSA}"'
+        """Return ICU-related info for a specified MMSA"""
+        query = f'SELECT MMSA, icu_beds, hospitals FROM icu_beds WHERE MMSA = "{MMSA}"'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
 
-        # Convert Decimal to float for JSON serialization
-        result = []
-        for row in data:
-            row_dict = dict(zip(['MMSA', 'total_percent_at_risk', 'high_risk_per_icu_bed', 'high_risk_per_hospital', 'icu_beds', 'hospitals', 'total_at_risk'], row))
-            for key, value in row_dict.items():
-                if isinstance(value, Decimal):
-                    row_dict[key] = float(value)  # Convert Decimal to float
-            result.append(row_dict)
+        result = [{'MMSA': row[0], 'count_icu_beds':row[1] ,'count_hospitals': row[2],} for row in data]
         return json.dumps(result)
 
 
