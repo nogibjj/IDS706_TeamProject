@@ -1,16 +1,14 @@
 install:
-	python -m pip install --upgrade pip
-	pip install -r requirements.txt
+	pip install --upgrade pip &&\
+		pip install -r requirements.txt
+
+test:
+	python3 -m pytest -vv --nbval --cov=script --cov=mylib test_*.py
+
+format:
+	black *.py
 
 lint:
-	pylint --disable=R,C --ignore-patterns=test_.*?py *.py --ignore=script.py
+	ruff check *.py
 
-build:
-	docker build -t ids706-final-project .
-
-deploy:
-	aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 057329718388.dkr.ecr.us-east-2.amazonaws.com
-	docker tag ids706-final-project:latest 057329718388.dkr.ecr.us-east-2.amazonaws.com/ids706-final-project:latest
-	docker push 057329718388.dkr.ecr.us-east-2.amazonaws.com/ids706-final-project:latest
-	
-all: install lint build deploy
+all: install lint format test

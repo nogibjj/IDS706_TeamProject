@@ -1,0 +1,40 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: 3.7
+            name: ubuntu_latest_Python_3_7
+            continue-on-error: true
+    runs-on: ${{ matrix.os }}
+    # runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install build dependencies
+      run: sudo apt-get install -y build-essential gcc
+    - name: Install packages
+      run: make install
+    - name: Install Ruff
+      run: pip install ruff
+    - name: Lint
+      run: make lint
+    - name: Test with pytest
+      run: make test
+      env:
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+    - name: Format with Black
+      run: make format
