@@ -21,7 +21,7 @@ This project is a FastAPI microservice designed to provide information on ICU be
 
 ## Setup and Installation
 1. **Clone the repository**:
-git clone [repository URL]
+git clone https://github.com/nogibjj/IDS706_TeamProject.git
 2. **Install Dependencies**:
 make install
 
