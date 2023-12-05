@@ -20,14 +20,31 @@ class DB:
         )
         self.cursor = self.connection.cursor()
 
+    # def get_icu_info(self, MMSA):
+    #     """Return ICU-related info for a specified MMSA"""
+    #     print(MMSA)
+    #     query = f'SELECT * FROM icu_beds WHERE MMSA = "{MMSA}"'
+    #     self.cursor.execute(query)
+    #     data = self.cursor.fetchall()
+
+    #     result = [dict(zip(['MMSA', 'total_percent_at_risk', 'high_risk_per_icu_bed', 'high_risk_per_hospital', 'icu_beds', 'hospitals', 'total_at_risk'], row)) for row in data]
+    #     return json.dumps(result)
+
     def get_icu_info(self, MMSA):
-        """Return ICU-related info for a specified MMSA"""
         query = f'SELECT * FROM icu_beds WHERE MMSA = "{MMSA}"'
         self.cursor.execute(query)
         data = self.cursor.fetchall()
 
-        result = [dict(zip(['MMSA', 'total_percent_at_risk', 'high_risk_per_icu_bed', 'high_risk_per_hospital', 'icu_beds', 'hospitals', 'total_at_risk'], row)) for row in data]
+        # Convert Decimal to float for JSON serialization
+        result = []
+        for row in data:
+            row_dict = dict(zip(['MMSA', 'total_percent_at_risk', 'high_risk_per_icu_bed', 'high_risk_per_hospital', 'icu_beds', 'hospitals', 'total_at_risk'], row))
+            for key, value in row_dict.items():
+                if isinstance(value, Decimal):
+                    row_dict[key] = float(value)  # Convert Decimal to float
+            result.append(row_dict)
         return json.dumps(result)
+
 
     def get_hospitals_info(self):
         """Return summary info about hospitals"""
