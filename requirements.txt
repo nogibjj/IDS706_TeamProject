@@ -25,3 +25,5 @@ httpx
 # Database connector
 mysql-connector-python
 
+# Load test
+locust
