@@ -1,6 +1,7 @@
 # ICU Data Service Microservice
 [![Python CI](https://github.com/nogibjj/IDS706_TeamProject/actions/workflows/python_app_cicd.yml/badge.svg)](https://github.com/nogibjj/IDS706_TeamProject/actions/workflows/python_app_cicd.yml)
-##Azure Link
+
+## Azure Link
 https://icu-data-service-microservice.azurewebsites.net/
 
 ## Team Members
