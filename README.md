@@ -60,5 +60,10 @@ Refer to `schema.sql` for the database schema. The data from `mmsa-icu-beds.csv`
 ## CI/CD
 CI/CD is implemented using GitHub Actions for automated testing and deployment.
 
+## Load Test
+We use Apach JMeter for load testing. Our service reach the limit of 10000QPS.
+![](load1.png)
+![](load2.png)
+
 ## Video
 
