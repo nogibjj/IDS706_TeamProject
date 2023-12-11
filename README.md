@@ -66,5 +66,5 @@ We use Apach JMeter for load testing. Our service reach the limit of 10000QPS.
 ![](load2.png)
 
 ## Video
-[To know more about this project? Press me!!!](https://youtu.be/w9Tsj9VGWaM)
+[To know more about our Team Project? Press me!!!](https://youtu.be/w9Tsj9VGWaM)
 
